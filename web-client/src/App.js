@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import Button from 'react-toolbox/lib/button/Button'
 
 const { request } = require("graphql-request")
 
 const API_URL =
-  (process.env.BACKEND_URL || 'http://localhost') + ':'
-  + (process.env.BACKEND_PORT || '3001')
+  ((process.env.BACKEND_URL && process.env.BACKEND_PORT) ?
+    (process.env.BACKEND_URL) + ':' + (process.env.BACKEND_PORT) : '')
   + '/translation'
 
 const query = (sentenceToTranslate, from, to) => `{
@@ -43,9 +44,9 @@ class Translator extends Component {
             (this.props.translation.correctedInput) ?
               (<div>
                 Did you mean "{this.props.translation.correctedInput}"?
-                  <button onClick={this.props.correctInput}>
+                  <Button onClick={this.props.correctInput}>
                   Yes
-                  </button>
+                  </Button>
               </div>)
               : null
           }
