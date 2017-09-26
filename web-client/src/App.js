@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 
 const { request } = require("graphql-request")
 
+const API_URL =
+  (process.env.BACKEND_URL || 'http://localhost') + ':'
+  + (process.env.BACKEND_PORT || '3001')
+  + '/translation'
+
 const query = (sentenceToTranslate, from, to) => `{
     translation(sentenceToTranslate: "${sentenceToTranslate}",from:"${from}", to:"${to}") {
       correctedInput,
@@ -104,7 +109,7 @@ class App extends Component {
   }
 
   updateTranslation = (oldSentence) =>
-    request("/translation", query(oldSentence, "en", "fr"))
+    request(API_URL, query(oldSentence, "en", "fr"))
       .then(resp => {
         console.log(resp)
         if (resp.translation.input === this.state.sentence)

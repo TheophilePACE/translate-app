@@ -1,0 +1,32 @@
+version: "3"
+services:
+
+  backend-translate-api:
+    image: "theophile/translate-api-backend"
+    build: 
+      context: ./docker/
+      dockerfile: Dockerfile.backend
+    environment:
+      - NODE_ENV=production
+      - BACKEND_PORT=3001
+    ports:
+      - '3001:3001'
+    command: npm start
+
+  frontend-translate-api:
+    image: "theophile/translate-api-frontend"
+    build: 
+      context: ./docker/
+      dockerfile: Dockerfile.frontend
+      args:
+        - BACKEND_URL=http://backend-translate-api
+        - BACKEND_PORT=3001
+    environment:
+      - NODE_ENV=production
+      - FRONTEND_PORT=3000
+      - BACKEND_URL=backend-translate-api
+      - BACKEND_PORT=3001
+    ports:
+      - '3000:3000'
+    command: npm start
+  

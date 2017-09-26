@@ -1,0 +1,8 @@
+FROM node:8.5
+RUN apt-get update && apt-get install -y unzip
+WORKDIR /usr/app/src
+RUN wget --no-check-certificate --content-disposition https://github.com/TheophilePACE/translate-app/archive/master.zip && \
+    unzip translate-app-master.zip && \
+    rm translate-app-master.zip
+WORKDIR translate-app-master
+RUN npm install

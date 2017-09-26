@@ -1,0 +1,13 @@
+FROM node:8.5
+RUN apt-get update && apt-get install -y unzip jq moreutils
+WORKDIR /usr/app/src
+RUN wget --no-check-certificate --content-disposition https://github.com/TheophilePACE/translate-app/archive/master.zip && \
+    unzip translate-app-master.zip && \
+    rm translate-app-master.zip
+WORKDIR translate-app-master/web-client/
+RUN npm install
+ARG BACKEND_URL="http://localhost"
+ARG BACKEND_PORT="3001"
+RUN echo $(jq --arg BACKEND_URI "${BACKEND_URL}:${BACKEND_PORT}" '(.proxy) |= $BACKEND_URI' package.json) > package.json
+RUN printenv && echo $(cat package.json)
+
